@@ -1,5 +1,5 @@
 {
-  "manifest_version": 1,
+  "manifest_version": 3,
   "name": "Wilmer",
   "version": "1.1",
   "description": "Marke texts in web pages and sync devices",
