@@ -1,31 +1,33 @@
 (function() {
-    //Function to store marking in the storage 
     function saveMarking(url, marking) {
         chrome.storage.sync.set({ [url]: marking });
     }
 
-    //Load marking 
     function loadMarking(url, callback) {
         chrome.storage.sync.get(url, data => {
             callback(data[url] || []);
         });
     }
 
-    //Apply saved marking 
-    function applyMarking(marking) {
-        marking.forEach(m => {
-            const bodyHTML = document.body.innerHTML;
-            const pos = bodyHTML.indexOf(m.texto);
-            if (pos !== -1) {
-                document.body.innerHTML = bodyHTML.replace(
-                    m.texto,
-                    `<span class="mark">${m.texto}</span>`
-                );
-            }
+    function removeAllMarkings() {
+        document.querySelectorAll("span.mark").forEach(span => {
+            span.replaceWith(document.createTextNode(span.textContent));
         });
     }
 
-    //Marking selected text 
+    function applyMarking(marking) {
+        removeAllMarkings();
+        marking.forEach(m => {
+            const bodyHTML = document.body.innerHTML;
+            // Escape special caracteres of the text 
+            const escapedText = m.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            document.body.innerHTML = document.body.innerHTML.replace(
+                new RegExp(escapedText, "g"),
+                `<span class="mark" data-mark-text="${encodeURIComponent(m.text)}">${m.text}</span>`
+            );
+        });
+    }
+
     function markingSelection() {
         const selection = window.getSelection();
         if (selection.rangeCount > 0) {
@@ -33,22 +35,64 @@
             if (!text.trim()) return;
 
             loadMarking(location.href, marking => {
-                marking.push({ text });
-                saveMarking(location.href, marking);
-                applyMarking([{ text }]);
+                //Avoid duplicate. 
+                if (!marking.some(m => m.text === text)) {
+                    marking.push({ text });
+                    saveMarking(location.href, marking);
+                    applyMarking(marking);
+                }
             });
         }
     }
 
-    //Ctrl+Shift+H to marker 
+    function removeMarking(text) {
+        loadMarking(location.href, marking => {
+            const updated = marking.filter(m => m.text !== text);
+            saveMarking(location.href, updated);
+            applyMarking(updated);
+        });
+    }
+
     document.addEventListener("keydown", e => {
-        if (e.key.toLowerCase() === "a") {
+        // Ctrl+Shift+H to mark 
+        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "h") {
             markingSelection();
+        }
+        // Ctrl+Shift+R to remove 
+        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "r") {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const text = selection.toString();
+                if (text.trim()) {
+                    removeMarking(text);
+                } else {
+                    // Remover mark under the cursor 
+                    const node = selection.focusNode;
+                    if (node && node.parentElement && node.parentElement.classList.contains("mark")) {
+                        removeMarking(node.parentElement.textContent);
+                    }
+                }
+            }
         }
     });
 
-    //When a page loads apply saved marking. 
+    document.addEventListener("click", e => {
+        if (e.ctrlKey && e.shiftKey && e.target.classList.contains("mark")) {
+            removeMarking(e.target.textContent);
+        }
+    });
+
     window.addEventListener("load", () => {
         loadMarking(location.href, applyMarking);
     });
+
+    //Simple style for mark 
+    const style = document.createElement("style");
+    style.textContent = `
+        .mark {
+            background: yellow;
+            cursor: pointer;
+        }
+    `;
+    document.head.appendChild(style);
 })();
