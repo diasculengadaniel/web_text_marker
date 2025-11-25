@@ -66,7 +66,7 @@
                 if (text.trim()) {
                     removeMarking(text);
                 } else {
-                    // Remover mark under the cursor 
+                    // Remove mark under the cursor 
                     const node = selection.focusNode;
                     if (node && node.parentElement && node.parentElement.classList.contains("mark")) {
                         removeMarking(node.parentElement.textContent);
@@ -77,6 +77,7 @@
     });
 
     document.addEventListener("click", e => {
+//    Ctrl+Shift+click to remove mark.  
         if (e.ctrlKey && e.shiftKey && e.target.classList.contains("mark")) {
             removeMarking(e.target.textContent);
         }
