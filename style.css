@@ -1,5 +1,83 @@
-.mark {
-    background-color: yellow;
-    padding: 0.1em;
+/* Reading model marks. Lines are drawn with stacked gradients so we can have
+   up to three underlines, and box-decoration-break keeps them on wrapped lines. */
+.wtm-mark {
+    --wtm-line: #1a3a6b;
+    --wtm-doubt: #d32f2f;
+    --wtm-thickness: 1.5px;
+    background-repeat: no-repeat !important;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    cursor: pointer;
 }
 
+/* Key words: three lines */
+.wtm-keyword {
+    background-image:
+        linear-gradient(var(--wtm-line), var(--wtm-line)),
+        linear-gradient(var(--wtm-line), var(--wtm-line)),
+        linear-gradient(var(--wtm-line), var(--wtm-line)) !important;
+    background-size: 100% var(--wtm-thickness) !important;
+    background-position: 0 100%, 0 calc(100% - 3px), 0 calc(100% - 6px) !important;
+    padding-bottom: 7px !important;
+}
+
+/* Main ideas: two lines */
+.wtm-main {
+    background-image:
+        linear-gradient(var(--wtm-line), var(--wtm-line)),
+        linear-gradient(var(--wtm-line), var(--wtm-line)) !important;
+    background-size: 100% var(--wtm-thickness) !important;
+    background-position: 0 100%, 0 calc(100% - 3px) !important;
+    padding-bottom: 4px !important;
+}
+
+/* Secondary ideas: one line */
+.wtm-secondary {
+    background-image: linear-gradient(var(--wtm-line), var(--wtm-line)) !important;
+    background-size: 100% var(--wtm-thickness) !important;
+    background-position: 0 100% !important;
+    padding-bottom: 2px !important;
+}
+
+/* Doubts: red line */
+.wtm-doubt {
+    background-image: linear-gradient(var(--wtm-doubt), var(--wtm-doubt)) !important;
+    background-size: 100% 2px !important;
+    background-position: 0 100% !important;
+    padding-bottom: 2px !important;
+}
+
+/* Classic yellow highlight */
+.wtm-highlight {
+    background-color: yellow !important;
+    background-image: none !important;
+    padding: 0.1em !important;
+}
+
+/* Floating toolbar (rendered inside a shadow root) */
+.wtm-toolbar {
+    display: flex;
+    gap: 2px;
+    padding: 4px;
+    background: #fff;
+    border: 1px solid #c8ccd4;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font: 14px/1 system-ui, sans-serif;
+    color: #222;
+}
+
+.wtm-toolbar button {
+    all: unset;
+    cursor: pointer;
+    padding: 4px 6px 8px;
+    border-radius: 4px;
+}
+
+.wtm-toolbar button:hover {
+    background: #eef2f8;
+}
+
+.wtm-toolbar .wtm-mark {
+    cursor: inherit;
+}

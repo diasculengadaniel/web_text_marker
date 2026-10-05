@@ -4,10 +4,10 @@
 A lightweight browser extension for Chrome/Brave that allows you to highlight text on any webpage and automatically sync your highlights across devices using `chrome.storage.sync`.
 
 ## Features
-- Highlight any text on any website.
-- Sync highlights across all devices where the extension is installed.
-- Keyboard shortcut for quick highlighting: **Ctrl+Shift+H**.
-- Highlights persist after page reload or browser restart.
+- Mark text on any website following a reading model (key words, main ideas, secondary ideas, doubts).
+- Floating toolbar next to the selection, plus keyboard shortcuts.
+- Sync marks across all devices where the extension is installed (live, via `chrome.storage.sync`).
+- Marks persist after page reload or browser restart.
 
 ##  Project Structure
 ##  Installation
@@ -18,18 +18,28 @@ A lightweight browser extension for Chrome/Brave that allows you to highlight te
 5. The extension will now be active in your browser.
 
 ## Usage
-1. Select the text you want to highlight.
-2. Press **A** to **A**aplly a highlight.
-3. Reload the page — your highlights will still be there.
-4. Log in to your browser account to enable cross-device sync.
+Select the text and pick a type in the floating toolbar, or use a shortcut:
+
+| Type | Style | Shortcut |
+|---|---|---|
+| Key word | three lines under the text | **Ctrl+Shift+1** |
+| Main idea | two lines | **Ctrl+Shift+2** |
+| Secondary idea | one line | **Ctrl+Shift+3** |
+| Doubt | red line | **Ctrl+Shift+4** |
+| Highlight | yellow background | **Ctrl+Shift+H** |
+
+- Marking the same passage again with another type changes its type.
+- Remove: **Ctrl+Shift+X** (mark under the cursor or touched by the selection) or **Ctrl+Shift+click** on the mark.
+- Reload the page — your marks will still be there.
+- Log in to your browser account to enable cross-device sync.
 
 ## Limitations
 - Works best on static web pages.
 - Dynamic content (e.g., single-page applications, infinite scroll) may require additional handling using **Text Anchors** or DOM Range serialization.
-- Current implementation matches text by content string, so multiple identical texts may all be highlighted.
+- Marks are stored as text plus a little surrounding context; if the page text changes a lot, a mark may not be found again.
+- `chrome.storage.sync` limits each page to ~8 KB of marks.
 
 ## Possible Improvements
-- Use W3C **Text Anchors** for more precise and robust highlight storage.
 - Add an options page for custom highlight colors.
 - Provide an interface to list, search, and delete saved highlights.
 - Implement a toolbar button to toggle highlight mode.
