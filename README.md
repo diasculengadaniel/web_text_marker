@@ -1,7 +1,7 @@
 # Text Highlighter Sync Extension
 # Code name: Wilmer, My little nephew who is Highlighter our lives lol!
 
-A lightweight browser extension for Chrome/Brave that allows you to highlight text on any webpage and automatically sync your highlights across devices using `chrome.storage.sync`.
+A lightweight browser extension for Chrome-base navigators that allows you to highlight text on any webpage and automatically sync your highlights across devices using `chrome.storage.sync`.
 
 ## Features
 - Mark text on any website following a reading model (key words, main ideas, secondary ideas, doubts).

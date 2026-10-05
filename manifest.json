@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Wilmer",
-  "version": "1.2",
+  "version": "2.0",
   "description": "Marke texts in web pages and sync devices",
   "permissions": ["storage"],
   "content_scripts": [
