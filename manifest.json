@@ -1,14 +1,20 @@
 {
-  "manifest_version": 1,
+  "manifest_version": 3,
   "name": "Wilmer",
-  "version": "1.1",
+  "version": "2.0",
   "description": "Marke texts in web pages and sync devices",
-  "permissions": ["storage", "scripting", "activeTab"],
+  "permissions": ["storage"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "js": ["content.js"],
       "css": ["style.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["style.css"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
